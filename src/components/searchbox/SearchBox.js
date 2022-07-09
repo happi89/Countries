@@ -1,12 +1,15 @@
-import { Component } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/react-in-jsx-scope */
+import { Component } from 'react';
+import './SearchBox.css';
 
 class SearchBox extends Component {
 	render() {
 		return (
 			<input
-				className="search-box"
-				type="search"
-				placeholder="search countries"
+				className={this.props.className}
+				type='search'
+				placeholder={this.props.placeholder}
 				onChange={this.props.onSearchChange}
 			/>
 		);
