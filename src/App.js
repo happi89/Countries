@@ -1,58 +1,45 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { Component } from 'react';
-import lodash from 'lodash';
 import './index.css';
 import Card from './components/card/Card';
 import SearchBox from './components/searchbox/SearchBox';
+import { useState, useEffect } from 'react';
 
-class App extends Component {
-	constructor() {
-		super();
-		this.id = lodash.uniqueId('id_');
+const App = () => {
+	const [countries, setCountries] = useState([]);
+	const [inputValue, setInputValue] = useState('');
+	const [filteredCountries, setFilteredCountries] = useState(countries);
 
-		this.state = {
-			countries: [],
-			inputValue: '',
-		};
-	}
-
-	componentDidMount() {
+	useEffect(() => {
 		fetch('https://restcountries.com/v2/all')
 			.then((res) => res.json())
-			.then((users) =>
-				this.setState(() => {
-					return { countries: users };
-				})
-			);
-	}
+			.then((users) => setCountries(users));
+	}, []);
 
-	onSearchChange = (e) => {
-		const inputValue = e.target.value.toLowerCase();
-		this.setState(() => {
-			return { inputValue };
-		});
-	};
-
-	render() {
-		const { countries, inputValue } = this.state;
-		const onSearchChange = this.onSearchChange;
-
-		const filteredCountries = countries.filter((country) => {
+	useEffect(() => {
+		const newFilteredCountries = countries.filter((country) => {
 			return country.name.toLowerCase().includes(inputValue);
 		});
 
-		return (
-			<div className='App'>
-				<h1>Where in the World?</h1>
-				<SearchBox
-					onSearchChange={onSearchChange}
-					placeholder={'search for a country'}
-					className={'search-box'}
-				/>
-				<Card countries={filteredCountries} className={'country'} />
-			</div>
-		);
-	}
-}
+		setFilteredCountries(newFilteredCountries);
+	}, [countries, inputValue]);
+
+	const onSearchChange = (e) => {
+		const inputeField = e.target.value.toLowerCase();
+		setInputValue(inputeField);
+	};
+
+	return (
+		<div className='App'>
+			<h1>Where in the World?</h1>
+
+			<SearchBox
+				onSearchChange={onSearchChange}
+				placeholder={'search for a country'}
+				className={'search-box'}
+			/>
+
+			<Card countries={filteredCountries} className={'country'} />
+		</div>
+	);
+};
 
 export default App;
