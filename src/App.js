@@ -1,12 +1,12 @@
 import { Component } from "react";
 import lodash from "lodash";
-
-import "./App.css";
+import "./index.css";
+import Card from "./components/card/Card";
+import SearchBox from "./components/searchbox/SearchBox";
 
 class App extends Component {
 	constructor() {
 		super();
-
 		this.id = lodash.uniqueId("id_");
 
 		this.state = {
@@ -35,7 +35,6 @@ class App extends Component {
 	render() {
 		const { countries, inputValue } = this.state;
 		const onSearchChange = this.onSearchChange;
-		const id = this.id;
 
 		const filteredCountries = countries.filter((country) => {
 			return country.name.toLowerCase().includes(inputValue);
@@ -43,19 +42,8 @@ class App extends Component {
 
 		return (
 			<div className="App">
-				<input
-					className="search-box"
-					type="search"
-					placeholder="search countries"
-					onChange={onSearchChange}
-				/>
-				{filteredCountries.map((country) => {
-					return (
-						<div key={id}>
-							<h1>{country.name}</h1>
-						</div>
-					);
-				})}
+				<SearchBox onSearchChange={onSearchChange} />
+				<Card countries={filteredCountries} />
 			</div>
 		);
 	}
