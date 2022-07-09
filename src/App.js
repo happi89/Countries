@@ -1,42 +1,64 @@
-import { Component } from 'react';
-import _ from 'lodash';
+import { Component } from "react";
+import lodash from "lodash";
 
-import './App.css';
+import "./App.css";
 
 class App extends Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
 
-    this.id = _.uniqueId("prefix-");
+		this.id = lodash.uniqueId("id_");
 
-    this.state = {
-      countries: []
-    }
-  }
-  
-  componentDidMount() {
-    fetch('https://restcountries.com/v2/all')
-      .then(res => res.json())
-      .then(users => this.setState(() => {
-        return {countries: users}
-      }))
-  }
+		this.state = {
+			countries: [],
+			inputValue: "",
+		};
+	}
 
-  render() {
-    const id = this.id;
+	componentDidMount() {
+		fetch("https://restcountries.com/v2/all")
+			.then((res) => res.json())
+			.then((users) =>
+				this.setState(() => {
+					return { countries: users };
+				})
+			);
+	}
 
-    return (
-      <div className="App">
-        {this.state.countries.map((country) => {
-          return (
-            <div key={id}>
-              <h1>{country.name}</h1>
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
+	onSearchChange = (e) => {
+		const inputValue = e.target.value.toLowerCase();
+		this.setState(() => {
+			return { inputValue };
+		});
+	};
+
+	render() {
+		const { countries, inputValue } = this.state;
+		const onSearchChange = this.onSearchChange;
+		const id = this.id;
+
+		const filteredCountries = countries.filter((country) => {
+			return country.name.toLowerCase().includes(inputValue);
+		});
+
+		return (
+			<div className="App">
+				<input
+					className="search-box"
+					type="search"
+					placeholder="search countries"
+					onChange={onSearchChange}
+				/>
+				{filteredCountries.map((country) => {
+					return (
+						<div key={id}>
+							<h1>{country.name}</h1>
+						</div>
+					);
+				})}
+			</div>
+		);
+	}
 }
 
 export default App;
