@@ -29,6 +29,7 @@ const Home = ({ countries }) => {
 	const regionOptions = regions.map((c) => {
 		return { value: c, label: c };
 	});
+	regionOptions.unshift({ value: '', label: 'All' });
 
 	return (
 		<>

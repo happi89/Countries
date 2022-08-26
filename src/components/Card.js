@@ -9,8 +9,6 @@ const Card = ({ countries }) => {
 
 	return (
 		<div className='flex flex-wrap gap-12 justify-center'>
-			{console.log(countries)}
-
 			{countries.map((country) => {
 				const { name, flags, population, region, capital } = country;
 				return (
