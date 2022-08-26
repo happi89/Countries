@@ -1,43 +1,30 @@
 import './index.css';
-import Card from './components/card/Card';
-import SearchBox from './components/searchbox/SearchBox';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Country from './pages/Country';
 
 const App = () => {
 	const [countries, setCountries] = useState([]);
-	const [inputValue, setInputValue] = useState('');
-	const [filteredCountries, setFilteredCountries] = useState(countries);
 
 	useEffect(() => {
-		fetch('https://restcountries.com/v2/all')
-			.then((res) => res.json())
-			.then((users) => setCountries(users));
+		const fetchCountries = async () => {
+			const data = await fetch('https://restcountries.com/v2/all');
+			const json = await data.json();
+			setCountries(json);
+		};
+		fetchCountries();
 	}, []);
 
-	useEffect(() => {
-		const newFilteredCountries = countries.filter((country) => {
-			return country.name.toLowerCase().includes(inputValue);
-		});
-
-		setFilteredCountries(newFilteredCountries);
-	}, [countries, inputValue]);
-
-	const onSearchChange = (e) => {
-		const inputeField = e.target.value.toLowerCase();
-		setInputValue(inputeField);
-	};
-
 	return (
-		<div className='App'>
-			<h1>Where in the World?</h1>
-
-			<SearchBox
-				onSearchChange={onSearchChange}
-				placeholder={'search for a country'}
-				className={'search-box'}
-			/>
-
-			<Card countries={filteredCountries} className={'country'} />
+		<div>
+			<h1 className='navbar text-3xl font-bold shadow-lg p-4'>
+				Where in the World?
+			</h1>
+			<Routes>
+				<Route path='/' element={<Home countries={countries} />} />
+				<Route path='countries/:name' element={<Country />} />
+			</Routes>
 		</div>
 	);
 };
