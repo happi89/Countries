@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import SearchBox from '../components/SearchBox';
 
 const Home = ({ countries }) => {
-	const [filteredCountries, setFilteredCountries] = useState(countries);
+	const [filteredCountries, setFilteredCountries] = useState([]);
+
+	useEffect(() => {
+		setFilteredCountries(countries);
+	}, [countries]);
 
 	const onSearchChange = (e) => {
 		const newFilteredCountries = countries.filter((country) => {

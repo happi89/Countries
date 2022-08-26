@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const Card = (props) => {
+const Card = ({ countries }) => {
 	const roundNum = (num) => {
 		if (num > 999) {
 			return Math.round(num / 100) / 10 + 'k';
@@ -9,7 +9,9 @@ const Card = (props) => {
 
 	return (
 		<div className='flex flex-wrap gap-12 justify-center'>
-			{props.countries.map((country) => {
+			{console.log(countries)}
+
+			{countries.map((country) => {
 				const { name, flags, population, region, capital } = country;
 				return (
 					<div className='card w-96 bg-base-100 shadow-lg p-6' key={name}>
