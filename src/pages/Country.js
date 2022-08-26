@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 const Country = () => {
 	const [country, setCountry] = useState('');
+	const [borders, setBorders] = useState([]);
 
 	const { name } = useParams();
 
@@ -18,6 +19,14 @@ const Country = () => {
 		fetchCountries();
 	}, [name]);
 
+	useEffect(() => {
+		if (country.borders) {
+			fetch(`https://restcountries.com/v2/alpha?codes=${country?.borders}`)
+				.then((res) => res.json())
+				.then((data) => setBorders(data));
+		}
+	});
+
 	return (
 		<div className='min-h-screen'>
 			<Link to='/'>
@@ -29,8 +38,7 @@ const Country = () => {
 					src={country?.flags?.svg}
 					alt={country?.name + 'flag'}
 				/>
-				<Stats country={country} />
-				<div className='ml-32 mt-24'>ff</div>
+				<Stats country={country} borders={borders} />
 			</div>
 		</div>
 	);

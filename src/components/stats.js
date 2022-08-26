@@ -1,4 +1,6 @@
-export function Stats({ country }) {
+import { Link } from 'react-router-dom';
+
+export function Stats({ country, borders }) {
 	return (
 		<div className='ml-32 mt-12'>
 			<h1 className='text-2xl font-bold mb-4'>{country?.name}</h1>
@@ -34,7 +36,7 @@ export function Stats({ country }) {
 					<span>{country?.currencies[0]?.code}</span>
 				)}
 			</p>
-			<p>
+			<div>
 				<span className='font-bold'>Languages:</span>{' '}
 				{country?.languages?.length !== 1 ? (
 					country?.languages?.map((l) => (
@@ -45,7 +47,20 @@ export function Stats({ country }) {
 				) : (
 					<span>{country?.languages[0]?.name}</span>
 				)}
-			</p>
+				<div>
+					<p className='font-bold'>
+						Bordering Countries:{' '}
+						{borders?.map((b) => (
+							<Link
+								to={`/countries/${b.name}`}
+								className='mx-1 link'
+								key={b.name}>
+								{b.name},
+							</Link>
+						))}
+					</p>
+				</div>
+			</div>
 		</div>
 	);
 }
