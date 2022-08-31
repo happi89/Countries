@@ -1,5 +1,5 @@
 import { Stats } from './../components/stats';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const Country = () => {
@@ -8,16 +8,17 @@ const Country = () => {
 
 	const { name } = useParams();
 
-	useEffect(() => {
-		const fetchCountries = async () => {
-			const data = await fetch(
-				`https://restcountries.com/v2/name/${name.toLowerCase()}?fullText=true`
-			);
-			const json = await data.json();
-			setCountry(json[0]);
-		};
-		fetchCountries();
+	const fetchCountry = useCallback(async () => {
+		const data = await fetch(
+			`https://restcountries.com/v2/name/${name.toLowerCase()}?fullText=true`
+		);
+		const json = await data.json();
+		setCountry(json[0]);
 	}, [name]);
+
+	useEffect(() => {
+		fetchCountry();
+	}, [fetchCountry]);
 
 	useEffect(() => {
 		if (country.borders) {
@@ -25,7 +26,7 @@ const Country = () => {
 				.then((res) => res.json())
 				.then((data) => setBorders(data));
 		}
-	});
+	}, [country.borders]);
 
 	return (
 		<div className='min-h-screen'>

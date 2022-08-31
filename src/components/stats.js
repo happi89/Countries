@@ -57,7 +57,7 @@ export function Stats({ country, borders }) {
 				) : (
 					<span>{languages[0]?.name}</span>
 				)}
-				{borders.length > 0 ? (
+				{borders?.length > 0 ? (
 					<div>
 						<p className='font-bold'>
 							Bordering Countries:{' '}
@@ -65,8 +65,8 @@ export function Stats({ country, borders }) {
 								<Link
 									to={`/countries/${b.name}`}
 									className='mx-1 link'
-									key={b.name}>
-									{b.name},
+									key={b?.name}>
+									{b?.name},
 								</Link>
 							))}
 						</p>

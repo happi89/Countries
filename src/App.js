@@ -1,5 +1,5 @@
 import './index.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Country from './pages/Country';
@@ -7,14 +7,15 @@ import Country from './pages/Country';
 const App = () => {
 	const [countries, setCountries] = useState([]);
 
-	useEffect(() => {
-		const fetchCountries = async () => {
-			const data = await fetch('https://restcountries.com/v2/all');
-			const json = await data.json();
-			setCountries(json);
-		};
-		fetchCountries();
+	const fetchCountries = useCallback(async () => {
+		const data = await fetch('https://restcountries.com/v2/all');
+		const json = await data.json();
+		setCountries(json);
 	}, []);
+
+	useEffect(() => {
+		fetchCountries();
+	}, [fetchCountries]);
 
 	return (
 		<div>
